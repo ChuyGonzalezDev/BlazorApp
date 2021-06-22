@@ -1,10 +1,10 @@
 ﻿@page "/todo"
 @using BlazorApp.Data
 
-<h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
+<h3>Todo (@_todos.Count(todo => !todo.IsDone))</h3>
 
 <ul>
-    @foreach (var todo in todos)
+    @foreach (var todo in _todos)
     {
         <li>
             <input type="checkbox" @bind="todo.IsDone" />
@@ -14,19 +14,17 @@
 </ul>
 
 
-<input placeholder="Something todo" @bind="newTodo" />
+<input placeholder="Something todo" @bind="_newTodo" />
 <button @onclick="AddTodo">Add todo</button>
 
 @code {
-    private List<TodoItem> todos = new();
-    private string newTodo;
+    private readonly List<TodoItem> _todos = new();
+    private string _newTodo;
 
     private void AddTodo()
     {
-        if (!string.IsNullOrWhiteSpace(newTodo))
-        {
-            todos.Add(new TodoItem { Title = newTodo });
-            newTodo = string.Empty;
-        }
+        if (string.IsNullOrWhiteSpace(_newTodo)) return;
+        _todos.Add(new TodoItem { Title = _newTodo });
+        _newTodo = string.Empty;
     }
 }
